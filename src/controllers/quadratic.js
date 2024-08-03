@@ -1,35 +1,21 @@
-import Pieza from '../models/Pieza.js';
+import compare from "./compare.js";
 
-function emparejarFuerzaBruta(tuercas, tornillos) {
-    const start = performance.now();
-    let iteraciones = 0;
+function quadratic(tuercas, tornillos) {
+  let n = tornillos.length
+  let pares = [];
 
-    let pares = [];
-    tuercas.forEach(tuerca => {
-        for (let i = 0; i < tornillos.length; i++) {
-            iteraciones++;
-            if (comparar(tuerca, tornillos[i]) === 0) { // 0 indica coincidencia exacta
-                pares.push([tuerca, tornillos[i]]);
-                tornillos.splice(i, 1); // Remueve el tornillo emparejado
-                break;
-            }
-        }
-    });
-
-    const end = performance.now();
-    const tiempo = end - start;
-
-    console.log('Fuerza Bruta - Iteraciones:', iteraciones, 'Tiempo:', tiempo, 'ms');
-
-    return pares;
-}
-
-function comparar(tuerca, tornillo) {
-    if (tuerca && tornillo) {
-        if (tuerca.getSize() === tornillo.getSize()) return 0;
-        return tuerca.getSize() < tornillo.getSize() ? -1 : 1;
+  for (let i = 0; i < n; i++) {
+    for (let j = 0; j < n; j++) {
+      if (compare(tuercas[i], tornillos[j]) === 0) {
+        pares.push({tuerca: tuercas[i], tornillo: tornillos[j]});
+        tornillos.splice(i, 1);
+        
+        j = n;
+      }
     }
-    throw new Error('Tuerca o tornillo indefinido');
+  }
+
+  return pares;
 }
 
-export { emparejarFuerzaBruta };
+export default quadratic

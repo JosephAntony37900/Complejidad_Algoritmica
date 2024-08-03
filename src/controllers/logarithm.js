@@ -1,47 +1,42 @@
-let iteracionesQuicksort = 0;
+import compare from "./compare.js";
 
-function quicksortEmparejar(tuercas, tornillos, low, high) {
-    if (low < high) {
-        let pivotIndex = partition(tuercas, tornillos, low, high);
-        quicksortEmparejar(tuercas, tornillos, low, pivotIndex - 1);
-        quicksortEmparejar(tuercas, tornillos, pivotIndex + 1, high);
+function partition(arr, low, high, pivot) {
+  let i = low;
+  for (let j = low; j < high; j++) {
+    if (compare(arr[j].getSize(), pivot.getSize()) < 0) {
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+      i++;
+    } else if (compare(arr[j].getSize(), pivot.getSize()) === 0) {
+      [arr[j], arr[high]] = [arr[high], arr[j]];
+      j--;
     }
+  }
+  [arr[i], arr[high]] = [arr[high], arr[i]];
+  return i;
 }
 
-function partition(tuercas, tornillos, low, high) {
-    let pivot = tornillos[low];
-    let i = low;
+function quicksortTuercasYTornillos(tuercas, tornillos, low, high) {
+  if (low < high) {
+    let pivotIndex = partition(tornillos, low, high, tuercas[low]);
+    partition(tuercas, low, high, tornillos[pivotIndex]);
 
-    for (let j = low + 1; j <= high; j++) {
-        iteracionesQuicksort++;
-        if (comparar(tuercas[j], pivot) < 0) {
-            i++;
-            [tuercas[i], tuercas[j]] = [tuercas[j], tuercas[i]];
-        }
-    }
-    [tuercas[low], tuercas[i]] = [tuercas[i], tuercas[low]];
-
-    pivot = tuercas[i];
-    let k = low;
-
-    for (let j = low + 1; j <= high; j++) {
-        iteracionesQuicksort++;
-        if (comparar(pivot, tornillos[j]) < 0) {
-            k++;
-            [tornillos[k], tornillos[j]] = [tornillos[j], tornillos[k]];
-        }
-    }
-    [tornillos[low], tornillos[k]] = [tornillos[k], tornillos[low]];
-
-    return i;
+    quicksortTuercasYTornillos(tuercas, tornillos, low, pivotIndex - 1);
+    quicksortTuercasYTornillos(tuercas, tornillos, pivotIndex + 1, high);
+  }
 }
 
-function comparar(tuerca, tornillo) {
-    if (tuerca && tornillo) {
-        if (tuerca.getSize() === tornillo.getSize()) return 0;
-        return tuerca.getSize() < tornillo.getSize() ? -1 : 1;
-    }
-    throw new Error('Tuerca o tornillo indefinido');
+function logarithm(tuercas, tornillos) {
+  let pares = []
+  let n = tuercas.length
+
+  quicksortTuercasYTornillos(tuercas, tornillos, 0, n - 1)
+  console.log();
+  
+  for (let i = 0; i < n; i++) {
+    pares.push({ tuerca: tuercas[i], tornillo: tornillos[i] })
+  }
+
+  return pares
 }
 
-export { quicksortEmparejar, iteracionesQuicksort };
+export default logarithm;

@@ -1,28 +1,18 @@
-import Pieza from '../models/Pieza.js';
+function linear(tuercas, tornillos) {
+  let tabla = new Map();
+  let pares = [];
 
-function emparejarHashTable(tuercas, tornillos) {
-    const start = performance.now();
-    let iteraciones = 0;
+  tuercas.forEach(tuerca => tabla.set(tuerca.getSize(), []));
+  tornillos.forEach(tornillo => {
+    let tuerca = tabla.get(tornillo.getSize())
+    tabla.set(tornillo.getSize(), [tuerca, tornillo]);
+  });
 
-    let tabla = new Map();
-    tuercas.forEach(tuerca => {
-        iteraciones++;
-        tabla.set(tuerca.getSize(), tuerca);
-    });
-    let pares = [];
-    tornillos.forEach(tornillo => {
-        iteraciones++;
-        if (tabla.has(tornillo.getSize())) {
-            pares.push([tabla.get(tornillo.getSize()), tornillo]);
-        }
-    });
+  tabla.forEach((val) => {
+    pares.push({ tuerca: val[0], tornillo: val[1] })
+  });
 
-    const end = performance.now();
-    const tiempo = end - start;
-
-    console.log('Hash Table - Iteraciones:', iteraciones, 'Tiempo:', tiempo, 'ms');
-
-    return pares;
+  return pares;
 }
 
-export { emparejarHashTable };
+export default linear

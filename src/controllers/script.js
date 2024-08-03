@@ -1,41 +1,41 @@
-import Pieza from '../models/Pieza.js';
-import { emparejarHashTable } from './linear.js';
-import { quicksortEmparejar, iteracionesQuicksort } from './logarithm.js';
-import { emparejarFuerzaBruta } from './quadratic.js';
+import { caja } from "./dependencies.js";
+import separateTornillosAndTuercas from "./separateTornillosAndTuercas.js";
+import quadratic from "./quadratic.js"; 
+import logarithm from "./logarithm.js";
+import linear from "./linear.js";
 
-function generarPiezas(n) {
-    let tuercas = [];
-    let tornillos = [];
-    for (let i = 1; i <= n; i++) {
-        tuercas.push(new Pieza('tuerca', i));
-        tornillos.push(new Pieza('tornillo', i));
-    }
-    tuercas = tuercas.sort(() => Math.random() - 0.5);
-    tornillos = tornillos.sort(() => Math.random() - 0.5);
-    return { tuercas, tornillos };
-}
+let separados = separateTornillosAndTuercas(caja)
 
-function ejecutarAlgoritmos(n) {
-    const { tuercas, tornillos } = generarPiezas(n);
+let tornillos = separados.tornillos
+let tuercas = separados.tuercas
 
-    // Fuerza Bruta
-    const paresFuerzaBruta = emparejarFuerzaBruta([...tuercas], [...tornillos]);
-    console.log('Fuerza Bruta:', paresFuerzaBruta);
+console.log('torn', tornillos)
+console.log('tuer', tuercas);
 
-    // Hash Table
-    const paresHashTable = emparejarHashTable([...tuercas], [...tornillos]);
-    console.log('Hash Table:', paresHashTable);
+let timeLogStart =  performance.now();
 
-    // Quicksort
-    const tuercasCopia = [...tuercas];
-    const tornillosCopia = [...tornillos];
-    const start = performance.now();
-    quicksortEmparejar(tuercasCopia, tornillosCopia, 0, n - 1);
-    const end = performance.now();
-    const tiempoQuicksort = end - start;
-    const paresQuicksort = tuercasCopia.map((tuerca, index) => [tuerca, tornillosCopia[index]]);
-    console.log('Quicksort - Iteraciones:', iteracionesQuicksort, 'Tiempo:', tiempoQuicksort, 'ms');
-    console.log('Quicksort:', paresQuicksort);
-}
+let paresLog = logarithm(tuercas, tornillos)
+console.log('log', paresLog);
 
-ejecutarAlgoritmos(10);
+let timeLogEnd =  performance.now();
+
+console.log('Tiempo de ejecucion de la funcion Logaritmica: ', timeLogEnd - timeLogStart)
+
+let timeQuadStart =  performance.now();
+
+let paresQuad = quadratic(tuercas, tornillos)
+console.log('Quad', paresLog);
+
+let timeQuadEnd =  performance.now();
+
+console.log('Tiempo de ejecucion de la funcion cuadratica: ', timeQuadEnd - timeQuadStart)
+
+
+let timeLineStart =  performance.now();
+
+let paresLine = linear(tuercas, tornillos)
+console.log('Line', paresLog);
+
+let timeLineEnd =  performance.now();
+
+console.log('Tiempo de ejecucion de la funcion lineal: ', timeLineEnd - timeLineStart)
