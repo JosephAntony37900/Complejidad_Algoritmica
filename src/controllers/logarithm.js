@@ -1,5 +1,7 @@
 import compare from "./compare.js";
 
+let cont = 0
+
 function mergeSort(array) {
   if (array.length <= 1) return array
 
@@ -13,6 +15,7 @@ function mergeSort(array) {
 function merge(left, right) {
   let result = [], leftIndex = 0, rightIndex = 0
   while (leftIndex < left.length && rightIndex < right.length) {
+    cont++
     if (compare(left[leftIndex].getSize(), right[rightIndex].getSize()) < 0) {
       result.push(left[leftIndex])
       leftIndex++
@@ -28,8 +31,11 @@ function logarithm(tuercas, tornillos) {
   let pares = []
   let tuercasOrdered = mergeSort(tuercas), tornillosOrdered = mergeSort(tornillos)
 
-  for (let i = 0; i < tuercas.length; i++) 
+  for (let i = 0; i < tuercas.length; i++) {
     pares.push({ tuerca: tuercasOrdered[i], tornillo: tornillosOrdered[i] })
+    cont++
+  }
+  console.log('Iteraciones de Logaritmica', cont);
 
   return pares
 }

@@ -16,7 +16,7 @@ function executeLog() {
   let timeLogStart = performance.now();
 
   let paresLog = logarithm(tuercas, tornillos)
-  console.log('log', paresLog);
+  console.log('Resultado de algoritmo logrítmico', paresLog);
 
   let timeLogEnd = performance.now();
 
@@ -26,7 +26,7 @@ function executeQuad() {
   let timeQuadStart = performance.now();
 
   let paresQuad = quadratic(tuercas, tornillos)
-  console.log('Quad', paresQuad);
+  console.log('Resultado de algoritmo cuadratico', paresQuad);
 
   let timeQuadEnd = performance.now();
 
@@ -37,7 +37,7 @@ function executeLine() {
   let timeLineStart = performance.now();
 
   let paresLine = linear(tuercas, tornillos)
-  console.log('Line', paresLine);
+  console.log('Resultado de algoritmo lineal', paresLine);
 
   let timeLineEnd = performance.now();
 
