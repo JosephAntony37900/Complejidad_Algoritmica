@@ -1,40 +1,35 @@
 import compare from "./compare.js";
 
-function partition(arr, low, high, pivot) {
-  let i = low;
-  for (let j = low; j < high; j++) {
-    if (compare(arr[j].getSize(), pivot.getSize()) < 0) {
-      [arr[i], arr[j]] = [arr[j], arr[i]];
-      i++;
-    } else if (compare(arr[j].getSize(), pivot.getSize()) === 0) {
-      [arr[j], arr[high]] = [arr[high], arr[j]];
-      j--;
-    }
-  }
-  [arr[i], arr[high]] = [arr[high], arr[i]];
-  return i;
+function mergeSort(array) {
+  if (array.length <= 1) return array
+
+  const mid = Math.floor(array.length / 2)
+  const left = mergeSort(array.slice(0, mid))
+  const right = mergeSort(array.slice(mid))
+
+  return merge(left, right)
 }
 
-function quicksortTuercasYTornillos(tuercas, tornillos, low, high) {
-  if (low < high) {
-    let pivotIndex = partition(tornillos, low, high, tuercas[low]);
-    partition(tuercas, low, high, tornillos[pivotIndex]);
-
-    quicksortTuercasYTornillos(tuercas, tornillos, low, pivotIndex - 1);
-    quicksortTuercasYTornillos(tuercas, tornillos, pivotIndex + 1, high);
+function merge(left, right) {
+  let result = [], leftIndex = 0, rightIndex = 0
+  while (leftIndex < left.length && rightIndex < right.length) {
+    if (compare(left[leftIndex].getSize(), right[rightIndex].getSize()) < 0) {
+      result.push(left[leftIndex])
+      leftIndex++
+    } else {
+      result.push(right[rightIndex])
+      rightIndex++
+    }
   }
+  return result.concat(left.slice(leftIndex)).concat(right.slice(rightIndex))
 }
 
 function logarithm(tuercas, tornillos) {
   let pares = []
-  let n = tuercas.length
+  let tuercasOrdered = mergeSort(tuercas), tornillosOrdered = mergeSort(tornillos)
 
-  quicksortTuercasYTornillos(tuercas, tornillos, 0, n - 1)
-  console.log();
-  
-  for (let i = 0; i < n; i++) {
-    pares.push({ tuerca: tuercas[i], tornillo: tornillos[i] })
-  }
+  for (let i = 0; i < tuercas.length; i++) 
+    pares.push({ tuerca: tuercasOrdered[i], tornillo: tornillosOrdered[i] })
 
   return pares
 }
