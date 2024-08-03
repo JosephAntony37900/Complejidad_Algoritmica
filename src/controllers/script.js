@@ -1,6 +1,6 @@
 import { caja } from "./dependencies.js";
 import separateTornillosAndTuercas from "./separateTornillosAndTuercas.js";
-import quadratic from "./quadratic.js"; 
+import quadratic from "./quadratic.js";
 import logarithm from "./logarithm.js";
 import linear from "./linear.js";
 
@@ -9,33 +9,41 @@ let separados = separateTornillosAndTuercas(caja)
 let tornillos = separados.tornillos
 let tuercas = separados.tuercas
 
-console.log('torn', tornillos)
-console.log('tuer', tuercas);
+console.log('Tornillos: ', tornillos)
+console.log('Tuercas:', tuercas);
 
-let timeLogStart =  performance.now();
+function executeLog() {
+  let timeLogStart = performance.now();
 
-let paresLog = logarithm(tuercas, tornillos)
-console.log('log', paresLog);
+  let paresLog = logarithm(tuercas, tornillos)
+  console.log('log', paresLog);
 
-let timeLogEnd =  performance.now();
+  let timeLogEnd = performance.now();
 
-console.log('Tiempo de ejecucion de la funcion Logaritmica: ', timeLogEnd - timeLogStart)
+  console.log('Tiempo de ejecucion de la funcion Logaritmica: ', timeLogEnd - timeLogStart)
+}
+function executeQuad() {
+  let timeQuadStart = performance.now();
 
-let timeQuadStart =  performance.now();
+  let paresQuad = quadratic(tuercas, tornillos)
+  console.log('Quad', paresQuad);
 
-let paresQuad = quadratic(tuercas, tornillos)
-console.log('Quad', paresLog);
+  let timeQuadEnd = performance.now();
 
-let timeQuadEnd =  performance.now();
+  console.log('Tiempo de ejecucion de la funcion cuadratica: ', timeQuadEnd - timeQuadStart)
+}
 
-console.log('Tiempo de ejecucion de la funcion cuadratica: ', timeQuadEnd - timeQuadStart)
+function executeLine() {
+  let timeLineStart = performance.now();
 
+  let paresLine = linear(tuercas, tornillos)
+  console.log('Line', paresLine);
 
-let timeLineStart =  performance.now();
+  let timeLineEnd = performance.now();
 
-let paresLine = linear(tuercas, tornillos)
-console.log('Line', paresLog);
+  console.log('Tiempo de ejecucion de la funcion lineal: ', timeLineEnd - timeLineStart)
+}
 
-let timeLineEnd =  performance.now();
-
-console.log('Tiempo de ejecucion de la funcion lineal: ', timeLineEnd - timeLineStart)
+executeLine()
+executeLog()
+executeQuad()
